@@ -2,6 +2,17 @@
 
 An image encoder & decoder
 
+This should NOT make any assumptions about file extensions
+
+It simply takes a blob of bytes & performs some modifications to them
+
+## TODO:
+1. write the encrypted stuff to a file
+2. decrypt the stuff into another file
+3. figure out if you can do it without 32 byte password
+4. rename everything about "image" to "file", this is generic
+5. Renamed "Encode & Decode" to "Encrypt & Decrypt"
+
 ## Installation via [Go](https://go.dev/dl/)
 
 Install on any platform using `go get`:
