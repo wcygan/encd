@@ -34,4 +34,6 @@ Flags:
 
 Maybe we can use the Go [image](https://pkg.go.dev/image) package?
 
-A similar idea is found [here](https://medium.com/swlh/protect-image-file-using-encryption-written-in-go-7d016c5a4719)
+- https://github.com/averagesecurityguy/crypto/blob/master/crypt.go
+- https://tutorialedge.net/golang/go-encrypt-decrypt-aes-tutorial/
+- https://medium.com/swlh/protect-image-file-using-encryption-written-in-go-7d016c5a4719
