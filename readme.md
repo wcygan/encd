@@ -7,7 +7,7 @@ A CLI for file encryption & decryption
 Install on any platform using [go install](https://pkg.go.dev/cmd/go#hdr-Compile_and_install_packages_and_dependencies):
 
 ```
-$ go install github.com/wcygan/encd
+$ go install github.com/wcygan/encd@latest
 ```
 
 Disclaimer: the binary will be located at `$GOPATH/bin/encd`. If you want to call the program simply by its name, `encd`, then you need to have $GOPATH/bin on your path:
