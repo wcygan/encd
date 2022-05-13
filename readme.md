@@ -83,8 +83,8 @@ $ tree
 │   ├── enc.go
 │   └── root.go
 ├── crypto
-│   ├── decoder.go
-│   ├── encoder.go
+│   ├── decrypt.go
+│   ├── encrypt.go
 │   └── oracle.go
 ├── go.mod
 ├── go.sum
@@ -93,5 +93,4 @@ $ tree
 └── resources
     ├── gary.png
     └── grumpy.jpg
-
 ```
