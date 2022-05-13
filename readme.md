@@ -53,15 +53,15 @@ Oh, there he is...
 ## Usage
 
 ```bash
-A file encoder & decoder
+A tool to encrypt and decrypt files with passwords
 
 Usage:
   encd [command]
 
 Available Commands:
   completion  Generate the autocompletion script for the specified shell
-  dec         Decode a file
-  enc         Encode a file
+  dec         Decrypt a file that is provided as an argument.
+  enc         Encrypt a file that is provided as an argument.
   help        Help about any command
 
 Flags:
@@ -70,7 +70,6 @@ Flags:
   -p, --password string   The password used to encode the file
   -t, --toggle            Help message for toggle
 
-Use "encd [command] --help" for more information about a command.
 ```
 
 ## File Tree

@@ -13,7 +13,7 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "encd",
-	Short: "A file encoder & decoder",
+	Short: "A tool to encrypt and decrypt files with passwords",
 }
 
 func Execute() {
@@ -29,9 +29,16 @@ func init() {
 	rootCmd.PersistentFlags().StringP("out", "o", "", "The file to write to")
 }
 
-func parseArgs(cmd *cobra.Command, args []string) ([]byte, string, io.Writer, error) {
-	if len(args) != 1 {
-		fmt.Println("ERROR: the program takes one argument")
+func parseArgs(cmd *cobra.Command, args []string) ([]byte, *crypto.Oracle, io.Writer, error) {
+	password, err := cmd.Flags().GetString("password")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	oracle, err := crypto.NewOracle(password)
+	if err != nil {
+		fmt.Println(err)
 		os.Exit(1)
 	}
 
@@ -43,12 +50,6 @@ func parseArgs(cmd *cobra.Command, args []string) ([]byte, string, io.Writer, er
 	}
 
 	out, err := cmd.Flags().GetString("out")
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	password, err := cmd.Flags().GetString("password")
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -73,5 +74,5 @@ func parseArgs(cmd *cobra.Command, args []string) ([]byte, string, io.Writer, er
 		writer = os.Stdout
 	}
 
-	return file, password, writer, nil
+	return file, oracle, writer, nil
 }

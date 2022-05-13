@@ -2,12 +2,7 @@ package crypto
 
 import "io"
 
-func Decode(ciphertext []byte, password string, out io.Writer) error {
-	oracle, err := NewOracle(password)
-	if err != nil {
-		return err
-	}
-
+func Decrypt(ciphertext []byte, oracle *Oracle, out io.Writer) error {
 	plaintext, err := oracle.Decrypt(ciphertext)
 	if err != nil {
 		return err
