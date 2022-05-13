@@ -1,17 +1,6 @@
 # encd
 
-An image encoder & decoder
-
-This should NOT make any assumptions about file extensions
-
-It simply takes a blob of bytes & performs some modifications to them
-
-## TODO:
-1. write the encrypted stuff to a file
-2. decrypt the stuff into another file
-3. figure out if you can do it without 32 byte password
-4. rename everything about "image" to "file", this is generic
-5. Renamed "Encode & Decode" to "Encrypt & Decrypt"
+A CLI for file encryption & decryption
 
 ## Installation via [Go](https://go.dev/dl/)
 
@@ -21,30 +10,83 @@ Install on any platform using `go get`:
 $ go get github.com/wcygan/encd
 ```
 
+## Example
+
+I've provided two files that you can use as an example, [Grumpy Cat](resources/grumpy.jpg)
+and [Gary the Snail](resources/gary.png).
+
+We will encode Gary into a temporary file & decode the temporary file back into Gary.
+
+```bash
+$ encd enc gary.png -o applesauce -p abcdefghijklmnopqrstuvxyz
+```
+
+We can see that `applesauce` is a bunch of nonsense binary:
+```bash
+$ head applesauce -n 1
+==> applesauce <==
+vuYu�n�Y�C���Ku_nD��'ހ߼��Q)�Q��S��g7ܽV���<Y����d�!�{���!i��0��ا�Վ[�a�1O�SȆ#��{�<���T$�KS?҅��$��������� �^ŜQ�/d���zs�r�d�Ri}
+q�E�&��y��O6�n5\�"p�i�<��9�BH��w�rKq;�ͨ\@���,�L���;�B�����
+zv�Uռ����ٲ�S��*N� 9�����XП��O:��&ɸ29�.nV��//����U�'x;���x
+```
+
+Unfortunately (or, fortunately?) you will not be able to open this file and see Gary because it is encoded! Let's try to decode it now...
+
+We perform the reverse operation to decode the binary back into the original file
+
+```bash
+$ encd dec applesauce -o applesauce.png -p abcdefghijklmnopqrstuvxyz
+```
+
+Where is Gary!?!
+
+<img src="resources/gary.png" width="300" height="250">
+
+Oh, there he is...
+
 ## Usage
 
-```
-An image encoder & decoder
+```bash
+A file encoder & decoder
 
 Usage:
   encd [command]
 
 Available Commands:
   completion  Generate the autocompletion script for the specified shell
-  dec         Decode an image
-  enc         Encode an image
+  dec         Decode a file
+  enc         Encode a file
   help        Help about any command
 
 Flags:
-  -h, --help     help for encd
-  -t, --toggle   Help message for toggle
+  -h, --help              help for encd
+  -o, --out string        The file to write to
+  -p, --password string   The password used to encode the file
+  -t, --toggle            Help message for toggle
 
+Use "encd [command] --help" for more information about a command.
 ```
 
-## Resources
+## File Tree
 
-Maybe we can use the Go [image](https://pkg.go.dev/image) package?
+```bash
+$ tree
+.
+├── LICENSE
+├── cmd
+│   ├── dec.go
+│   ├── enc.go
+│   └── root.go
+├── crypto
+│   ├── decoder.go
+│   ├── encoder.go
+│   └── oracle.go
+├── go.mod
+├── go.sum
+├── main.go
+├── readme.md
+└── resources
+    ├── gary.png
+    └── grumpy.jpg
 
-- https://github.com/averagesecurityguy/crypto/blob/master/crypt.go
-- https://tutorialedge.net/golang/go-encrypt-decrypt-aes-tutorial/
-- https://medium.com/swlh/protect-image-file-using-encryption-written-in-go-7d016c5a4719
+```

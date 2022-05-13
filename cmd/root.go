@@ -13,7 +13,7 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "encd",
-	Short: "An image crypto & decoder",
+	Short: "A file encoder & decoder",
 }
 
 func Execute() {
@@ -31,14 +31,14 @@ func init() {
 
 func parseArgs(cmd *cobra.Command, args []string) ([]byte, string, io.Writer, error) {
 	if len(args) != 1 {
-		fmt.Println("please provide one argument")
+		fmt.Println("ERROR: the program takes one argument")
 		os.Exit(1)
 	}
 
 	f := args[0]
 	file, err := os.ReadFile(f)
 	if err != nil {
-		fmt.Println("Could not read " + f)
+		fmt.Println(err)
 		os.Exit(1)
 	}
 

@@ -9,7 +9,7 @@ import (
 
 var encCmd = &cobra.Command{
 	Use:   "enc",
-	Short: "Encode an image",
+	Short: "Encode a file",
 	Run: func(cmd *cobra.Command, args []string) {
 		file, password, writer, err := parseArgs(cmd, args)
 		if err != nil {

@@ -9,7 +9,7 @@ import (
 
 var decCmd = &cobra.Command{
 	Use:   "dec",
-	Short: "Decode an image",
+	Short: "Decode a file",
 	Run: func(cmd *cobra.Command, args []string) {
 		file, password, writer, err := parseArgs(cmd, args)
 		if err != nil {
