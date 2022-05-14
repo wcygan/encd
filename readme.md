@@ -87,3 +87,7 @@ $ tree
     ├── gary.png
     └── grumpy.jpeg
 ```
+
+## Disclaimer
+
+This tool is powerful, use it at your own risk. If you aren't clever about how you encrypt, decrypt, or backup your data you may end up losing data.
