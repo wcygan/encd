@@ -8,7 +8,7 @@ import (
 
 var decCmd = &cobra.Command{
 	Use:   "dec",
-	Short: "Decrypt a file that is provided as an argument.",
+	Short: "Decrypt a list of files or directories",
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		oracle, _, argSet, err := parseArgs(cmd, args)

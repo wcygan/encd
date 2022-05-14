@@ -1,18 +1,19 @@
 package cmd
 
 import (
-	"bufio"
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/wcygan/encd/crypto"
 	"io"
+	"io/fs"
 	"os"
+	"path/filepath"
 	"strconv"
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "encd",
-	Short: "A tool to encrypt and decrypt files with passwords",
+	Short: "A tool to encrypt and decrypt files and directories with passwords",
 }
 
 func Execute() {
@@ -24,50 +25,54 @@ func Execute() {
 
 func init() {
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	rootCmd.PersistentFlags().StringP("password", "p", "", "The password used to encode the file")
+	rootCmd.PersistentFlags().StringP("password", "p", "", "The secret phrase used for encryption and decryption")
 }
 
-func run(oracle *crypto.Oracle, args map[string]bool, isEncrypt bool) {
-	for arg, _ := range args {
-		// open the file
-		f, err := os.Open(arg)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			continue
-		}
-
-		// get the file info
-		info, err := f.Stat()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			continue
-		}
-
-		// skip if it is a directory
-		// todo @wcygan: make this recursive and split it into a new function
-		if !info.IsDir() {
-			// get the file contents & obtain an io.Writer
-			contents, writer, err := fopen(arg)
+func run(oracle *crypto.Oracle, paths map[string]bool, isEncrypt bool) {
+	for path := range paths {
+		err := filepath.WalkDir(path, func(currentPath string, d fs.DirEntry, err error) error {
+			// open the file
+			f, err := os.Open(currentPath)
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err)
-				continue
+				return err
 			}
 
-			if isEncrypt {
-				err = crypto.Encrypt(contents, oracle, writer)
+			// get the file info
+			info, err := f.Stat()
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				return err
+			}
+
+			// skip the encryption if it is a directory
+			if !info.IsDir() {
+				// get the file contents & obtain an io.Writer
+				contents, writer, err := fopen(currentPath)
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
-					continue
+					return err
 				}
-			} else {
-				err = crypto.Decrypt(contents, oracle, writer)
-				if err != nil {
-					fmt.Fprintln(os.Stderr, err)
-					continue
+
+				if isEncrypt {
+					err = crypto.Encrypt(contents, oracle, writer)
+					if err != nil {
+						fmt.Fprintln(os.Stderr, err)
+						return err
+					}
+				} else {
+					err = crypto.Decrypt(contents, oracle, writer)
+					if err != nil {
+						fmt.Fprintln(os.Stderr, err)
+						return err
+					}
 				}
 			}
-		} else {
-			fmt.Fprintln(os.Stdout, "skipping directory: "+arg)
+
+			return nil
+		})
+		if err != nil {
+			return
 		}
 	}
 }
@@ -116,8 +121,5 @@ func fopen(filename string) ([]byte, io.Writer, error) {
 		return nil, nil, err
 	}
 
-	var writer io.Writer
-	writer = bufio.NewWriter(out)
-
-	return file, writer, nil
+	return file, out, nil
 }

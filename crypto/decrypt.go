@@ -1,6 +1,8 @@
 package crypto
 
-import "io"
+import (
+	"io"
+)
 
 func Decrypt(ciphertext []byte, oracle *Oracle, out io.Writer) error {
 	plaintext, err := oracle.Decrypt(ciphertext)

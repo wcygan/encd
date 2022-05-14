@@ -10,7 +10,7 @@ import (
 
 var encCmd = &cobra.Command{
 	Use:   "enc",
-	Short: "Encrypt a file that is provided as an argument.",
+	Short: "Encrypt a list of files or directories",
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		oracle, password, argSet, err := parseArgs(cmd, args)
@@ -20,18 +20,16 @@ var encCmd = &cobra.Command{
 		}
 
 		verify(password, argSet)
-
 		run(oracle, argSet, true)
 	},
 }
 
 // verify prompts the user to verify their password
-// the code here is kinda sus ... but it works
 func verify(password string, args map[string]bool) {
 
 	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Println("Attempting to encrypt these files...\n{")
+	fmt.Println("Attempting to encrypt these files or directories\n{")
 	for arg, _ := range args {
 		fmt.Println("  " + arg + ",")
 	}
