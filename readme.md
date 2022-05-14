@@ -18,7 +18,7 @@ to access `$GOPATH/bin`.
 
 ### Encryption
 
-Encrypt a list of arguments (files or directories):
+Encrypt a list of files or directories:
 
 ```bash
 $ encd enc [ARGS...] -p YourSecretPhrase
@@ -26,7 +26,7 @@ $ encd enc [ARGS...] -p YourSecretPhrase
 
 ### Decryption
 
-Decrypt a list of arguments (files or directories):
+Decrypt a list of files or directories:
 
 ```bash
 $ encd dec [ARGS...] -p YourSecretPhrase
@@ -53,6 +53,16 @@ Flags:
   -t, --toggle            Help message for toggle
 
 Use "encd [command] --help" for more information about a command.
+```
+
+## Cross Compilation
+
+Want to compile this program for supported platforms? (You can find supported platforms via `go tool dist list`). 
+
+To cross-compile this project, use the following command:
+
+```bash
+$ chmod +x cross-compile.bash && ./cross-compile.bash
 ```
 
 ## File Tree
