@@ -1,10 +1,11 @@
 package crypto
 
 import (
-	"io"
+	"os"
 )
 
-func Encrypt(plaintext []byte, oracle *Oracle, out io.Writer) error {
+func Encrypt(plaintext []byte, oracle *Oracle, out *os.File) error {
+	defer out.Close()
 	ciphertext := oracle.Encrypt(plaintext)
 
 	_, err := out.Write(ciphertext)

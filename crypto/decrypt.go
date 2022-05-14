@@ -1,10 +1,12 @@
 package crypto
 
 import (
-	"io"
+	"os"
 )
 
-func Decrypt(ciphertext []byte, oracle *Oracle, out io.Writer) error {
+func Decrypt(ciphertext []byte, oracle *Oracle, out *os.File) error {
+	defer out.Close()
+
 	plaintext, err := oracle.Decrypt(ciphertext)
 	if err != nil {
 		return err

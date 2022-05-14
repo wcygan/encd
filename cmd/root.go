@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/wcygan/encd/crypto"
-	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -47,21 +46,21 @@ func run(oracle *crypto.Oracle, paths map[string]bool, isEncrypt bool) {
 
 			// skip the encryption if it is a directory
 			if !info.IsDir() {
-				// get the file contents & obtain an io.Writer
-				contents, writer, err := fopen(currentPath)
+				// get the file contents & obtain an *os.File
+				contents, file, err := fopen(currentPath)
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
 					return err
 				}
 
 				if isEncrypt {
-					err = crypto.Encrypt(contents, oracle, writer)
+					err = crypto.Encrypt(contents, oracle, file)
 					if err != nil {
 						fmt.Fprintln(os.Stderr, err)
 						return err
 					}
 				} else {
-					err = crypto.Decrypt(contents, oracle, writer)
+					err = crypto.Decrypt(contents, oracle, file)
 					if err != nil {
 						fmt.Fprintln(os.Stderr, err)
 						return err
@@ -109,8 +108,8 @@ func parseArgs(cmd *cobra.Command, args []string) (*crypto.Oracle, string, map[s
 	return oracle, password, argSet, nil
 }
 
-// fopen reads a file then returns its contents & an io.Writer to overwrite the file
-func fopen(filename string) ([]byte, io.Writer, error) {
+// fopen reads a file then returns its contents & an *os.File to overwrite the file
+func fopen(filename string) ([]byte, *os.File, error) {
 	file, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, nil, err
