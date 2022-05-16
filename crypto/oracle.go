@@ -6,11 +6,7 @@ import (
 	"golang.org/x/crypto/argon2"
 )
 
-// MinimumPasswordLength the minimum password length.
 const MinimumPasswordLength = 16
-
-// Static salt used to seed the Argon2 KDF. Generated with:
-// head -c 32 /dev/urandom | base64
 const salt = "eYPq4kRvyHYTdRykUsVbG+Azun77wwd2Th7yzjedHhc="
 
 // The Oracle struct manages the encryption and decryption of data.
